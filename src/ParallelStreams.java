@@ -1,6 +1,7 @@
 
 import java.util.function.Function;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class ParallelStreams {
@@ -19,7 +20,13 @@ public class ParallelStreams {
 		long iterativeExecutionTime = measureSumPerf(iterativeSum(), 10000000);
 		System.out.println("Iterative Execution Time is: " + iterativeExecutionTime + " msecs");
 		long parallelExecutionTime = measureSumPerf(parallelSum(), 10000000);
-		System.out.println("Iterative Execution Time is: " + parallelExecutionTime + " msecs");
+		System.out.println("Prallel Execution Time is: " + parallelExecutionTime + " msecs");
+		
+		long seqExecutionTimeRangeClosed = measureSumPerf(sequentialSumRangeClosed(), 10000000);
+		System.out.println("Sequential Execution Time using range closed is: " + seqExecutionTimeRangeClosed + " msecs");
+		
+		long parallelExecutionTimeRangeClosed = measureSumPerf(parallelSumRangeClosed(), 10000000);
+		System.out.println("Prallel Execution Time using range closed is: " + parallelExecutionTimeRangeClosed + " msecs");
 
 	}
 
@@ -42,7 +49,22 @@ public class ParallelStreams {
 			return Stream.iterate(1L, i -> i + 1).limit(n).parallel().reduce(0L, Long::sum);
 		};
 	}
-
+	
+	// Calculating the sum of first n natural numbers sequentially using rangeClosed 
+		public static Function<Long, Long> sequentialSumRangeClosed() {
+			
+			return n -> {
+				return LongStream.rangeClosed(1L, n).reduce(0L, Long::sum);
+			};
+		}
+		
+		// Calculating the sum of first n natural numbers parallelly using rangeClosed 
+				public static Function<Long, Long> parallelSumRangeClosed() {
+					
+					return n -> {
+						return LongStream.rangeClosed(1L, n).parallel().reduce(0L, Long::sum);
+					};
+				}
 	private static long measureSumPerf(Function<Long, Long> function, long n) {
 		long fastest = Long.MAX_VALUE;
 		for (int i = 0; i < 10; i++) {
