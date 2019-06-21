@@ -5,11 +5,14 @@ import java.util.stream.LongStream;
 
 public class ForkJoinSumCalculationDemo {
 	public static void main(String args[]) {
-		long numbers = 5;
-		/*Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		System.out.println("Max Count of first n natural numbers to calculate the sum: ");
-		long numbers = sc.nextLong();*/
-		forkJoinSum(numbers);
+		long numbers = sc.nextLong();
+		long begin = System.nanoTime();
+		long sum = forkJoinSum(numbers);
+		long time = (System.nanoTime() - begin)/1000000;
+		System.out.println("sum computed in time: " + time + " msecs");
+		System.out.println("Final Sum is : " + sum);
 	}
 
 	private static long forkJoinSum(long numbers) {

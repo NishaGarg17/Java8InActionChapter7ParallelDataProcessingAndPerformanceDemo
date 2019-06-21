@@ -19,7 +19,7 @@ public class ForkJoinSumCalculator extends RecursiveTask<Long>  {
 	protected Long compute() {
 		int length = end-start;
 		if(length <= THRESHHOLD) {
-			computeSumSequentially();
+			return computeSumSequentially();
 		}
 		ForkJoinSumCalculator leftTask = new ForkJoinSumCalculator(numbers, start, start + length/2);
 		leftTask.fork();
